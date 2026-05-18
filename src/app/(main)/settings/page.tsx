@@ -17,7 +17,6 @@ export default function SettingsPage() {
         設定
       </motion.h1>
 
-      {/* 信用卡資訊 */}
       <section className="mb-8">
         <h2 className="text-xs font-medium tracking-[0.1em] text-[#0D0D0D]/40 uppercase mb-3">
           信用卡額度
@@ -46,28 +45,22 @@ export default function SettingsPage() {
         </div>
       </section>
 
-      {/* 捷徑說明 */}
       <section className="mb-8">
         <h2 className="text-xs font-medium tracking-[0.1em] text-[#0D0D0D]/40 uppercase mb-3">
           iOS 捷徑串接
         </h2>
         <div className="bg-white rounded-2xl px-4 py-4 shadow-sm shadow-[#0D0D0D]/4 space-y-3">
           <p className="text-sm text-[#0D0D0D]/70 leading-relaxed">
-            使用 iOS 捷徑 App，可透過語音或主動捷徑快速新增消費記錄，
-            無需開啟 App 手動輸入。
+            使用 iOS 捷徑 App，可透過語音或主動捷徑快速新增消費記錄。
           </p>
           <div className="bg-[#F8F8F5] rounded-xl p-3">
             <p className="text-xs font-mono text-[#1A1F5E] break-all">
-              POST {typeof window !== 'undefined' ? window.location.origin : ''}/api/transactions
+              POST /api/transactions
             </p>
           </div>
-          <p className="text-xs text-[#0D0D0D]/35">
-            詳細設定請參閱捷徑設定說明文件
-          </p>
         </div>
       </section>
 
-      {/* App 版本 */}
       <div className="text-center py-4">
         <p className="text-xs text-[#0D0D0D]/20">信用卡記帳 v1.0</p>
       </div>
