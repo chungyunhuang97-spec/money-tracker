@@ -12,3 +12,5 @@ export default function MainLayout({
     </>
   )
 }
+
+export const dynamic = 'force-dynamic'
