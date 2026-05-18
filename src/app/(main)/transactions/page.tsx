@@ -1,5 +1,6 @@
-export const dynamic = 'force-dynamic'
 'use client'
+
+export const dynamic = 'force-dynamic'
 
 import { useState } from 'react'
 import { motion } from 'framer-motion'
@@ -24,12 +25,10 @@ export default function TransactionsPage() {
         刷卡記錄
       </motion.h1>
 
-      {/* 月份 Filter */}
       <div className="mb-4">
         <MonthFilter selectedMonth={monthsAgo} onChange={setMonthsAgo} />
       </div>
 
-      {/* 卡片 Filter */}
       <div className="flex gap-2 mb-5 overflow-x-auto no-scrollbar">
         <button
           onClick={() => setSelectedCard(undefined)}
@@ -55,7 +54,6 @@ export default function TransactionsPage() {
         ))}
       </div>
 
-      {/* 交易列表 */}
       {loading ? (
         <div className="space-y-4">
           {[1, 2, 3, 4, 5].map((n) => (
