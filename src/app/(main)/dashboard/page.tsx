@@ -37,20 +37,20 @@ export default function DashboardPage() {
         <div className="grid grid-cols-2 gap-4 mb-5">
           <div>
             <p className="text-[11px] text-white/40 mb-1">總收入</p>
-            <p className="font-number text-2xl font-normal leading-none text-white">
+            <p className="font-bagel text-2xl font-normal leading-none text-white">
               {formatCurrency(totalIncome)}
             </p>
           </div>
           <div>
             <p className="text-[11px] text-white/40 mb-1">總支出</p>
-            <p className="font-number text-2xl font-normal leading-none text-white">
+            <p className="font-bagel text-2xl font-normal leading-none text-white">
               {formatCurrency(totalExpense)}
             </p>
           </div>
         </div>
         <div className="border-t border-white/10 pt-4">
           <p className="text-[11px] text-white/40 mb-1">剩餘可動用</p>
-          <p className={`font-number text-4xl font-normal leading-none ${remaining < 0 ? 'text-red-400' : 'text-[#FFE000]'}`}>
+          <p className={`font-bagel text-4xl font-normal leading-none ${remaining < 0 ? 'text-red-400' : 'text-[#FFE000]'}`}>
             {formatCurrency(remaining)}
           </p>
         </div>
@@ -65,14 +65,14 @@ export default function DashboardPage() {
       >
         <div className="bg-white rounded-2xl p-4 shadow-sm shadow-[#0D0D0D]/4">
           <p className="text-[11px] text-[#0D0D0D]/40 mb-1">日均可用</p>
-          <p className="font-number text-2xl font-normal text-[#1A1F5E] leading-none">
+          <p className="font-bagel text-2xl font-normal text-[#1A1F5E] leading-none">
             {formatCurrency(Math.max(0, daily))}
           </p>
           <p className="text-[10px] text-[#0D0D0D]/30 mt-1">/ 天</p>
         </div>
         <div className="bg-white rounded-2xl p-4 shadow-sm shadow-[#0D0D0D]/4">
           <p className="text-[11px] text-[#0D0D0D]/40 mb-1">週均可用</p>
-          <p className="font-number text-2xl font-normal text-[#1A1F5E] leading-none">
+          <p className="font-bagel text-2xl font-normal text-[#1A1F5E] leading-none">
             {formatCurrency(Math.max(0, weekly))}
           </p>
           <p className="text-[10px] text-[#0D0D0D]/30 mt-1">/ 週</p>
@@ -95,7 +95,7 @@ export default function DashboardPage() {
               <div key={card.id}>
                 <div className="flex justify-between mb-1.5">
                   <span className="text-sm font-medium text-[#0D0D0D]">{card.name}</span>
-                  <span className="font-number text-sm text-[#0D0D0D]/60">{formatCurrency(used)}</span>
+                  <span className="font-bagel text-sm text-[#0D0D0D]/60">{formatCurrency(used)}</span>
                 </div>
                 <div className="h-1.5 bg-[#0D0D0D]/6 rounded-full overflow-hidden">
                   <motion.div
