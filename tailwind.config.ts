@@ -17,7 +17,7 @@ const config: Config = {
         ink: '#0D0D0D',
       },
       fontFamily: {
-        danfo: ['Danfo', 'serif'],
+        danfo: ['Purple-Purse', 'serif'],
         sans: ['Noto Sans TC', 'sans-serif'],
       },
       borderRadius: {
