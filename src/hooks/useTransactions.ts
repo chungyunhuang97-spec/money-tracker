@@ -1,9 +1,8 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
-import { supabase } from '@/lib/supabase'
+import { apiFetch } from '@/lib/api'
 import { Transaction, TransactionInsert, CardId } from '@/types'
-import { getMonthRange } from '@/lib/utils'
 
 interface UseTransactionsOptions {
   month?: string
@@ -17,46 +16,37 @@ export function useTransactions(options: UseTransactionsOptions = {}) {
 
   const load = useCallback(async () => {
     setLoading(true)
-    let query = supabase
-      .from('transactions')
-      .select('*, category:budget_categories(*)')
-      .order('transaction_date', { ascending: false })
-
-    if (month) {
-      const { start, end } = getMonthRange(month)
-      query = query.gte('transaction_date', start).lte('transaction_date', end)
-    }
-    if (cardId) query = query.eq('card_id', cardId)
-
-    const { data } = await query
-    if (data) setTransactions(data)
+    try {
+      const params = new URLSearchParams()
+      if (month) params.set('month', month)
+      if (cardId) params.set('card_id', cardId)
+      const res = await apiFetch<{ data: Transaction[] }>(`/api/transactions?${params}`)
+      setTransactions(res.data || [])
+    } catch { setTransactions([]) }
     setLoading(false)
   }, [month, cardId])
 
   useEffect(() => { load() }, [load])
 
   const add = async (tx: TransactionInsert) => {
-    const { data } = await supabase
-      .from('transactions')
-      .insert(tx)
-      .select('*, category:budget_categories(*)')
-      .single()
-    if (data) setTransactions((prev) => [data, ...prev])
-    return data
+    const res = await apiFetch<{ data: Transaction }>('/api/transactions', {
+      method: 'POST',
+      body: JSON.stringify(tx),
+    })
+    if (res.data) setTransactions((prev) => [res.data, ...prev])
+    return res.data
   }
 
   const update = async (id: string, updates: Partial<TransactionInsert>) => {
-    const { data } = await supabase
-      .from('transactions')
-      .update(updates)
-      .eq('id', id)
-      .select('*, category:budget_categories(*)')
-      .single()
-    if (data) setTransactions((prev) => prev.map((t) => (t.id === id ? data : t)))
+    const res = await apiFetch<{ data: Transaction }>(`/api/transactions?id=${id}`, {
+      method: 'PATCH',
+      body: JSON.stringify(updates),
+    })
+    if (res.data) setTransactions((prev) => prev.map((t) => (t.id === id ? res.data : t)))
   }
 
   const remove = async (id: string) => {
-    await supabase.from('transactions').delete().eq('id', id)
+    await apiFetch(`/api/transactions?id=${id}`, { method: 'DELETE' })
     setTransactions((prev) => prev.filter((t) => t.id !== id))
   }
 
@@ -70,20 +60,16 @@ export function useCardSpending(month: string) {
   useEffect(() => {
     async function load() {
       setLoading(true)
-      const { start, end } = getMonthRange(month)
-      const { data } = await supabase
-        .from('transactions')
-        .select('card_id, amount')
-        .gte('transaction_date', start)
-        .lte('transaction_date', end)
-
-      if (data) {
+      try {
+        const res = await apiFetch<{ data: { card_id: string; amount: number }[] }>(
+          `/api/transactions?month=${month}&fields=card_id,amount`
+        )
         const map: Record<string, number> = {}
-        data.forEach((tx) => {
-          map[tx.card_id] = (map[tx.card_id] || 0) + tx.amount
+        ;(res.data || []).forEach((tx) => {
+          map[tx.card_id] = (map[tx.card_id] || 0) + Number(tx.amount)
         })
         setSpending(map)
-      }
+      } catch { setSpending({}) }
       setLoading(false)
     }
     load()

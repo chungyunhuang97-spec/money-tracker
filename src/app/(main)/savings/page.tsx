@@ -6,6 +6,7 @@ import { useSavingsGoals } from '@/hooks/useSavings'
 import { formatCurrency, getCurrentMonth } from '@/lib/utils'
 import { DEPOSIT_COLORS, SavingsGoal } from '@/types'
 import BottomSheet from '@/components/ui/BottomSheet'
+import AmountInput from '@/components/ui/AmountInput'
 
 function GoalCard({ goal, onAddDeposit, onEdit }: {
   goal: SavingsGoal
@@ -115,12 +116,10 @@ function DepositForm({
       </div>
       <div>
         <label className="text-xs text-[#0D0D0D]/40 mb-1 block">存入金額</label>
-        <input
-          type="number"
+        <AmountInput
           className="w-full bg-white border border-[#0D0D0D]/10 rounded-xl px-3 py-2.5 text-sm focus:outline-none"
-          placeholder="0"
           value={form.amount}
-          onChange={(e) => setForm({ ...form, amount: e.target.value })}
+          onChange={(v) => setForm({ ...form, amount: v })}
         />
       </div>
       <div>
@@ -170,12 +169,10 @@ function NewGoalForm({ onSave, onClose }: { onSave: (name: string, target: numbe
       </div>
       <div>
         <label className="text-xs text-[#0D0D0D]/40 mb-1 block">目標金額</label>
-        <input
-          type="number"
+        <AmountInput
           className="w-full bg-white border border-[#0D0D0D]/10 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-[#1A1F5E]/40"
-          placeholder="0"
           value={form.target}
-          onChange={(e) => setForm({ ...form, target: e.target.value })}
+          onChange={(v) => setForm({ ...form, target: v })}
         />
       </div>
       <button
@@ -280,11 +277,10 @@ export default function SavingsPage() {
             </div>
             <div>
               <label className="text-xs text-[#0D0D0D]/40 mb-1 block">目標金額</label>
-              <input
-                type="number"
+              <AmountInput
                 className="w-full bg-white border border-[#0D0D0D]/10 rounded-xl px-3 py-2.5 text-sm focus:outline-none"
                 value={editForm.target}
-                onChange={(e) => setEditForm({ ...editForm, target: e.target.value })}
+                onChange={(v) => setEditForm({ ...editForm, target: v })}
               />
             </div>
             <div className="flex gap-3">

@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { supabase } from '@/lib/supabase'
+import { apiFetch } from '@/lib/api'
 import { CardSetting, BankAccount, BudgetCategory } from '@/types'
 
 export function useCardSettings() {
@@ -9,15 +9,18 @@ export function useCardSettings() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    supabase.from('card_settings').select('*').order('billing_day').then(({ data }) => {
-      if (data) setCards(data)
-      setLoading(false)
-    })
+    apiFetch<{ data: CardSetting[] }>('/api/settings/cards')
+      .then((res) => setCards(res.data || []))
+      .catch(() => setCards([]))
+      .finally(() => setLoading(false))
   }, [])
 
   const update = async (id: string, updates: Partial<CardSetting>) => {
-    await supabase.from('card_settings').update(updates).eq('id', id)
-    setCards((prev) => prev.map((c) => (c.id === id ? { ...c, ...updates } : c)))
+    const res = await apiFetch<{ data: CardSetting }>(`/api/settings/cards?id=${id}`, {
+      method: 'PATCH',
+      body: JSON.stringify(updates),
+    })
+    if (res.data) setCards((prev) => prev.map((c) => (c.id === id ? res.data : c)))
   }
 
   return { cards, loading, update }
@@ -28,20 +31,25 @@ export function useBankAccounts() {
   const [loading, setLoading] = useState(true)
 
   const load = async () => {
-    const { data } = await supabase.from('bank_accounts').select('*').order('created_at')
-    if (data) setAccounts(data)
+    try {
+      const res = await apiFetch<{ data: BankAccount[] }>('/api/settings/accounts')
+      setAccounts(res.data || [])
+    } catch { setAccounts([]) }
     setLoading(false)
   }
 
   useEffect(() => { load() }, [])
 
   const add = async (name: string) => {
-    const { data } = await supabase.from('bank_accounts').insert({ name }).select().single()
-    if (data) setAccounts((prev) => [...prev, data])
+    const res = await apiFetch<{ data: BankAccount }>('/api/settings/accounts', {
+      method: 'POST',
+      body: JSON.stringify({ name }),
+    })
+    if (res.data) setAccounts((prev) => [...prev, res.data])
   }
 
   const remove = async (id: string) => {
-    await supabase.from('bank_accounts').delete().eq('id', id)
+    await apiFetch(`/api/settings/accounts?id=${id}`, { method: 'DELETE' })
     setAccounts((prev) => prev.filter((a) => a.id !== id))
   }
 
@@ -53,20 +61,25 @@ export function useBudgetCategories() {
   const [loading, setLoading] = useState(true)
 
   const load = async () => {
-    const { data } = await supabase.from('budget_categories').select('*').order('created_at')
-    if (data) setCategories(data)
+    try {
+      const res = await apiFetch<{ data: BudgetCategory[] }>('/api/settings/categories')
+      setCategories(res.data || [])
+    } catch { setCategories([]) }
     setLoading(false)
   }
 
   useEffect(() => { load() }, [])
 
   const add = async (name: string, color: string) => {
-    const { data } = await supabase.from('budget_categories').insert({ name, color }).select().single()
-    if (data) setCategories((prev) => [...prev, data])
+    const res = await apiFetch<{ data: BudgetCategory }>('/api/settings/categories', {
+      method: 'POST',
+      body: JSON.stringify({ name, color }),
+    })
+    if (res.data) setCategories((prev) => [...prev, res.data])
   }
 
   const remove = async (id: string) => {
-    await supabase.from('budget_categories').delete().eq('id', id)
+    await apiFetch(`/api/settings/categories?id=${id}`, { method: 'DELETE' })
     setCategories((prev) => prev.filter((c) => c.id !== id))
   }
 

@@ -8,6 +8,7 @@ import { useBankAccounts, useBudgetCategories } from '@/hooks/useSettings'
 import { formatCurrency, getCurrentMonth } from '@/lib/utils'
 import { BudgetItem, BudgetItemInsert, IncomeSourceInsert, CardId } from '@/types'
 import MonthPicker from '@/components/ui/MonthPicker'
+import AmountInput from '@/components/ui/AmountInput'
 import BottomSheet from '@/components/ui/BottomSheet'
 
 // ─── 顏色標籤 ───────────────────────────────────────────────
@@ -46,7 +47,7 @@ function BudgetRow({ item, onEdit }: { item: BudgetItem; onEdit: () => void }) {
         </div>
       </div>
       <div className="text-right flex-shrink-0">
-        <p className="font-number text-base text-[#0D0D0D]">{formatCurrency(item.amount)}</p>
+        <p className="font-bagel text-base text-[#0D0D0D]">{formatCurrency(item.amount)}</p>
         <div className="flex gap-1 justify-end mt-0.5">
           <span className={`text-[9px] px-1.5 py-0.5 rounded-full ${item.transferred ? 'bg-[#10B981]/15 text-[#10B981]' : 'bg-[#0D0D0D]/8 text-[#0D0D0D]/35'}`}>
             轉帳
@@ -133,12 +134,10 @@ function BudgetItemForm({
         </div>
         <div>
           <label className="text-xs text-[#0D0D0D]/40 mb-1 block">金額</label>
-          <input
-            type="number"
+          <AmountInput
             className="w-full bg-white border border-[#0D0D0D]/10 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-[#1A1F5E]/40"
-            placeholder="0"
             value={form.amount}
-            onChange={(e) => setForm({ ...form, amount: e.target.value })}
+            onChange={(v) => setForm({ ...form, amount: v })}
           />
         </div>
       </div>
@@ -285,12 +284,10 @@ function IncomeForm({
       )}
       <div>
         <label className="text-xs text-[#0D0D0D]/40 mb-1 block">金額</label>
-        <input
-          type="number"
+        <AmountInput
           className="w-full bg-white border border-[#0D0D0D]/10 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-[#1A1F5E]/40"
-          placeholder="0"
           value={form.amount}
-          onChange={(e) => setForm({ ...form, amount: e.target.value })}
+          onChange={(v) => setForm({ ...form, amount: v })}
         />
       </div>
       <div>
@@ -363,7 +360,7 @@ export default function BudgetPage() {
                   {s.notes && <span className="text-[11px] text-[#0D0D0D]/35 ml-1">{s.notes}</span>}
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="font-number text-sm text-[#0D0D0D]">{formatCurrency(s.amount)}</span>
+                  <span className="font-bagel text-sm text-[#0D0D0D]">{formatCurrency(s.amount)}</span>
                   <button onClick={() => removeIncome(s.id)} className="text-[#0D0D0D]/20 text-xs">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg>
                   </button>
@@ -372,7 +369,7 @@ export default function BudgetPage() {
             ))}
             <div className="border-t border-[#0D0D0D]/6 pt-2 flex justify-between">
               <span className="text-xs text-[#0D0D0D]/40">合計</span>
-              <span className="font-number text-sm font-medium text-[#1A1F5E]">{formatCurrency(totalIncome)}</span>
+              <span className="font-bagel text-sm font-medium text-[#1A1F5E]">{formatCurrency(totalIncome)}</span>
             </div>
           </div>
         )}
@@ -404,7 +401,7 @@ export default function BudgetPage() {
             ))}
             <div className="border-t border-[#0D0D0D]/6 pt-3 flex justify-between">
               <span className="text-xs text-[#0D0D0D]/40">總支出</span>
-              <span className="font-number text-sm font-medium text-[#1A1F5E]">{formatCurrency(total)}</span>
+              <span className="font-bagel text-sm font-medium text-[#1A1F5E]">{formatCurrency(total)}</span>
             </div>
           </>
         )}

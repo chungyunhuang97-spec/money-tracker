@@ -14,8 +14,8 @@ const config: Config = {
         ink: '#0D0D0D',
       },
       fontFamily: {
-      bagel: ['Bagel Fat One', 'serif'],  // ← 改這個
-      sans: ['Noto Sans TC', 'sans-serif'],
+        danfo: ['Danfo', 'serif'],
+        sans: ['Noto Sans TC', 'sans-serif'],
       },
     },
   },

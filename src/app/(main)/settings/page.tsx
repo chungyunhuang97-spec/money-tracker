@@ -6,6 +6,7 @@ import { useCardSettings, useBankAccounts, useBudgetCategories } from '@/hooks/u
 import { formatCurrency } from '@/lib/utils'
 import { DEPOSIT_COLORS } from '@/types'
 import BottomSheet from '@/components/ui/BottomSheet'
+import AmountInput from '@/components/ui/AmountInput'
 
 export default function SettingsPage() {
   const { cards, update: updateCard } = useCardSettings()
@@ -142,11 +143,10 @@ export default function SettingsPage() {
         <div className="space-y-4 pb-4">
           <div>
             <label className="text-xs text-[#0D0D0D]/40 mb-1 block">信用額度</label>
-            <input
-              type="number"
+            <AmountInput
               className="w-full bg-white border border-[#0D0D0D]/10 rounded-xl px-3 py-2.5 text-sm focus:outline-none"
               value={cardForm.credit_limit}
-              onChange={(e) => setCardForm({ ...cardForm, credit_limit: e.target.value })}
+              onChange={(v) => setCardForm({ ...cardForm, credit_limit: v })}
             />
           </div>
           <div>

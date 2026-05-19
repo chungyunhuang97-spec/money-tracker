@@ -8,6 +8,7 @@ import { useBudgetCategories } from '@/hooks/useSettings'
 import { formatCurrency, formatDate } from '@/lib/utils'
 import { Transaction, TransactionInsert, CardId } from '@/types'
 import MonthPicker from '@/components/ui/MonthPicker'
+import AmountInput from '@/components/ui/AmountInput'
 import BottomSheet from '@/components/ui/BottomSheet'
 
 const CARD_META: Record<string, { name: string; color: string; textColor: string }> = {
@@ -86,12 +87,10 @@ function TransactionForm({
       <div className="grid grid-cols-2 gap-3">
         <div>
           <label className="text-xs text-[#0D0D0D]/40 mb-1 block">金額</label>
-          <input
-            type="number"
+          <AmountInput
             className="w-full bg-white border border-[#0D0D0D]/10 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-[#1A1F5E]/40"
-            placeholder="0"
             value={form.amount}
-            onChange={(e) => setForm({ ...form, amount: e.target.value })}
+            onChange={(v) => setForm({ ...form, amount: v })}
           />
         </div>
         <div>
@@ -142,12 +141,10 @@ function TransactionForm({
           <div className="grid grid-cols-2 gap-3">
             <div>
               <label className="text-xs text-[#0D0D0D]/40 mb-1 block">代付金額</label>
-              <input
-                type="number"
+              <AmountInput
                 className="w-full bg-white border border-[#0D0D0D]/10 rounded-xl px-3 py-2 text-sm focus:outline-none"
-                placeholder="0"
                 value={form.proxy_amount}
-                onChange={(e) => setForm({ ...form, proxy_amount: e.target.value })}
+                onChange={(v) => setForm({ ...form, proxy_amount: v })}
               />
             </div>
             <div>
@@ -269,7 +266,7 @@ export default function TransactionsPage() {
                   )}
                 </p>
               </div>
-              <span className="font-number text-base text-[#0D0D0D] flex-shrink-0">
+              <span className="font-bagel text-base text-[#0D0D0D] flex-shrink-0">
                 -{formatCurrency(tx.amount)}
               </span>
             </button>
