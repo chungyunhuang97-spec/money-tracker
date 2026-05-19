@@ -70,7 +70,7 @@ function GoalCard({ goal, onAddDeposit, onEdit }: {
 
       <div className="flex items-center justify-between">
         <div>
-          <span className="font-number text-lg font-normal text-[#1A1F5E]">{formatCurrency(accumulated)}</span>
+          <span className="font-bagel text-lg font-normal text-[#1A1F5E]">{formatCurrency(accumulated)}</span>
           <span className="text-xs text-[#0D0D0D]/35 ml-1">/ {pct.toFixed(0)}%</span>
         </div>
         <button
