@@ -14,7 +14,7 @@ const config: Config = {
         ink: '#0D0D0D',
       },
       fontFamily: {
-        danfo: ['Dangrek', 'serif'],
+        danfo: ['Dangrek', 'regular'],
         sans: ['Noto Sans TC', 'sans-serif'],
       },
     },
